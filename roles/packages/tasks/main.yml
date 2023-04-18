@@ -1,0 +1,98 @@
+---
+- name: Install Debian packages - specific
+  become: true
+  apt:
+    pkg: "{{ debian_packages }}"
+    state: latest
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Install Debian packages
+  become: true
+  apt:
+    pkg: "{{ packages }}"
+    state: latest
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
+- name: Importing RPM Fusion (free) key
+  become: yes
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020
+
+- name: Importing RPM (non-free) key
+  become: yes
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020
+
+- name: Remote RPM install for RPM Fusion nonfree repo
+  become: yes
+  dnf: 
+    name: https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ansible_distribution_major_version}}.noarch.rpm
+    state: present
+  when: ansible_distribution == 'Fedora'
+
+- name: Remote RPM install for RPM Fusion free repo
+  become: yes
+  dnf: 
+    name: https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ansible_distribution_major_version}}.noarch.rpm
+    state: present
+  when: ansible_distribution == 'Fedora'
+
+- name: Upgrade all packages
+  become: true
+  dnf:
+    name: '*'
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Fedora packages - commun 
+  become: true
+  yum:
+    name: "{{ packages }}"
+    state: latest
+    update_cache: true
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Fedora packages - specific 
+  become: true
+  yum:
+    name: "{{ fedora_packages }}"
+    state: latest
+    update_cache: true
+  when: ansible_distribution == 'Fedora'
+
+- name: Add the flathub flatpak repo
+  become: true
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+
+- name: Install flatpacks
+  become: true
+  flatpak:
+    name: "{{ flatpak_packages }}"
+
+- name: Download AWS CLI
+  command: curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /home/{{ ansible_user_id }}/awscliv2.zip
+
+- name: Unzip AWS CLI
+  command: unzip /home/{{ ansible_user_id }}/awscliv2.zip
+
+- name: Install AWS CLI
+  become: yes
+  command: /home/{{ ansible_user_id }}/aws/install
+
+- name: Remove AWS zip
+  file:
+    path: /home/{{ ansible_user_id }}/awscliv2.zip
+    state: absent
+
+- name: Remove AWS folder
+  file:
+    path: /home/{{ ansible_user_id }}/aws
+    state: absent

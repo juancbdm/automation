@@ -1,0 +1,114 @@
+---
+remote_user: "{{ ansible_env.SUDO_USER or ansible_user_id }}"
+packages:
+  - curl
+  - python3-pip
+  - virtualenv
+  - python3-setuptools
+  - tmux
+  - lsd
+  - rsync
+  - git
+  - zsh
+  - fzf
+  - ripgrep
+  - bat
+  - htop
+  - neofetch
+  - tldr
+  - jq
+  - wget
+  - unzip
+  - zip
+  - xclip
+  - lua
+  - neovim
+  - python3-neovim
+  - nmap
+  - vlc
+  - golang
+  - lua
+  - nodejs
+  - yarnpkg
+
+fedora_packages:
+  - java-latest-openjdk.x86_64
+  - akmod-nvidia
+
+debian_packages:
+  - apt-transport-https
+  - ca-certificates
+  - software-properties-common
+
+docker_edition: 'ce'
+docker_packages:
+  - "docker-{{ docker_edition }}"
+  - "docker-{{ docker_edition }}-cli"
+  - "docker-{{ docker_edition }}-rootless-extras"
+docker_packages_state: present
+docker_install_compose: true
+docker_users:
+  - "{{ ansible_user_id }}"
+pip_install_packages:
+  - name: docker
+  - name: docker-compose
+
+flatpak_packages:
+  - org.gimp.GIMP
+  - com.google.Chrome
+  - org.chromium.Chromium
+  - org.mozilla.firefox
+  - com.spotify.Client
+  - com.bitwarden.desktop
+  - com.transmissionbt.Transmission
+  - com.discordapp.Discord
+  - com.obsproject.Studio
+
+oh_my_zsh_user_config: {
+username: "{{ ansible_user_id }}",
+oh_my_zsh: {
+  theme: darkblood,
+  update_mode: reminder,
+  update_frequency: 3,
+  write_zshrc: false
+}}
+
+oh_my_zsh_plugins:
+  - repo:
+      name: "zsh-autosuggestions"
+      url: "https://github.com/zsh-users/zsh-autosuggestions"
+      path: "/home/{{ oh_my_zsh_user_config.username }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+  - repo:
+      name: "zsh-syntax-highlighting"
+      url: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+      path: "/home/{{ oh_my_zsh_user_config.username }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+  - repo:
+      name: "zsh-completions"
+      url: "https://github.com/zsh-users/zsh-completions"
+      path: "/home/{{ oh_my_zsh_user_config.username }}/.oh-my-zsh/custom/plugins/zsh-completions"
+  - repo:
+      name: "zsh-history-substring-search"
+      url: "https://github.com/zsh-users/zsh-history-substring-search"
+      path: "/home/{{ oh_my_zsh_user_config.username }}/.oh-my-zsh/custom/plugins/zsh-history-substring-search"
+
+
+nf_user: "{{ ansible_user_id }}"
+nf_single_fonts:
+  - "UbuntuMono/Regular/complete/Ubuntu Mono Nerd Font Complete.ttf"
+  - "UbuntuMono/Bold/complete/Ubuntu Mono Bold Nerd Font Complete Mono.ttf"
+  - "NerdFontsSymbolsOnly/complete/Symbols-2048-em Nerd Font Complete.ttf"
+  - "NerdFontsSymbolsOnly/complete/Symbols-2048-em Nerd Font Complete Mono.ttf"
+  - "NerdFontsSymbolsOnly/complete/Symbols-1000-em Nerd Font Complete.ttf"
+  - "NerdFontsSymbolsOnly/complete/Symbols-1000-em Nerd Font Complete Mono.ttf"
+
+
+dotfiles_repo: https://github.com/juancbdm/dotfiles.git
+
+
+source_key: "/home/{{ ansible_user_id }}/.ssh/id_rsa"
+dest_key: "/home/{{ ansible_user_id }}/.ssh/id_rsa"
+
+source_pub_key: "/home/{{ ansible_user_id }}/.ssh/id_rsa.pub"
+dest_pub_key: "/home/{{ ansible_user_id }}/.ssh/id_rsa.pub"
+
+

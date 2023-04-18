@@ -1,0 +1,9 @@
+---
+collections:
+- name: community.general
+
+roles:
+  - name: geerlingguy.pip
+  - name: geerlingguy.docker
+  - name: gantsign.oh-my-zsh
+  - name: ctorgalson.nerdfonts

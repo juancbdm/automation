@@ -1,0 +1,30 @@
+---
+- hosts: TestOne
+  gather_facts: yes
+
+  pre_tasks:
+    - name: Install requirements
+      delegate_to: localhost
+      ansible.builtin.command: ansible-galaxy install -r requirements.yml
+      register: install_requirements
+      changed_when: install_requirements.rc == 0
+      tags: ['env', 'requirements', 'ansible-galaxy']
+
+  roles:
+    - {role: 'packages', tags: ['env', 'packages', 'apt', 'yum', 'dnf']}
+    - {role: 'geerlingguy.pip', become: yes, tags: ['env', 'docker', 'pip', 'python', 'docker']}
+    - {role: 'geerlingguy.docker', become: yes, tags: ['env', 'docker']}
+    - {role: 'shell', tags: ['env', 'shell', 'zsh']}
+    - {role: 'gantsign.oh-my-zsh', users: [ "{{ oh_my_zsh_user_config }}" ], tags: ['env', 'shell', 'zsh']}
+    - {role: 'ctorgalson.nerdfonts', tags: ['env', 'shell', 'fonts', 'nerdfonts']}
+
+  tasks:
+    - name: Clone zsh plugins
+      git: 
+        repo: "{{ item.repo.url }}"
+        dest: "{{ item.repo.path }}"
+        version: master
+      loop: "{{ oh_my_zsh_plugins }}"
+      register: zsh_plugins
+      changed_when: zsh_plugins is changed
+      tags: ['env', 'shell', 'zsh']
