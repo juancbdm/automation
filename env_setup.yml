@@ -1,5 +1,5 @@
 ---
-- hosts: TestOne
+- hosts: local_machine
   gather_facts: yes
 
   pre_tasks:
@@ -16,10 +16,11 @@
     - {role: 'geerlingguy.docker', become: yes, tags: ['env', 'docker']}
     - {role: 'shell', tags: ['env', 'shell', 'zsh']}
     - {role: 'gantsign.oh-my-zsh', users: [ "{{ oh_my_zsh_user_config }}" ], tags: ['env', 'shell', 'zsh']}
-    - {role: 'ctorgalson.nerdfonts', tags: ['env', 'shell', 'fonts', 'nerdfonts']}
+    # - {role: 'ctorgalson.nerdfonts', tags: ['env', 'shell', 'fonts', 'nerdfonts']}
 
   tasks:
     - name: Clone zsh plugins
+      delegate_to: localhost
       git: 
         repo: "{{ item.repo.url }}"
         dest: "{{ item.repo.path }}"

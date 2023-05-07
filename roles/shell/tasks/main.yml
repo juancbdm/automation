@@ -57,3 +57,5 @@
 - name: Checkout dotfiles
   command: sh -c "git --git-dir=$HOME/.dotfiles --work-tree=$HOME checkout"
 
+- name: Force System to use x11
+  command: echo "DisplayServer=x11" >> /etc/sddm.conf

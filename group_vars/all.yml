@@ -34,6 +34,9 @@ packages:
 fedora_packages:
   - java-latest-openjdk.x86_64
   - akmod-nvidia
+  - xorg-x11-drv-nvidia-cuda
+  - nvidia-gpu-firmware
+  - nvidia-settings
 
 debian_packages:
   - apt-transport-https
@@ -94,8 +97,8 @@ oh_my_zsh_plugins:
 
 nf_user: "{{ ansible_user_id }}"
 nf_single_fonts:
-  - "UbuntuMono/Regular/complete/Ubuntu Mono Nerd Font Complete.ttf"
-  - "UbuntuMono/Bold/complete/Ubuntu Mono Bold Nerd Font Complete Mono.ttf"
+  # - "UbuntuMono/Regular/complete/Ubuntu Mono Nerd Font Complete.ttf"
+  # - "UbuntuMono/Bold/complete/Ubuntu Mono Bold Nerd Font Complete Mono.ttf"
   - "NerdFontsSymbolsOnly/complete/Symbols-2048-em Nerd Font Complete.ttf"
   - "NerdFontsSymbolsOnly/complete/Symbols-2048-em Nerd Font Complete Mono.ttf"
   - "NerdFontsSymbolsOnly/complete/Symbols-1000-em Nerd Font Complete.ttf"
